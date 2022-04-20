@@ -2,21 +2,35 @@
   "name": "@otp-simple/workspace",
   "version": "0.0.0",
   "license": "MIT",
+  "author": "zozzzzz",
   "scripts": {
     "commitizen": "cz",
     "prepare": "husky install"
   },
-  "private": true,
-  "dependencies": {},
+  "private": false,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "devDependencies": {
     "@nrwl/cli": "13.10.3",
+    "@nrwl/eslint-plugin-nx": "13.10.3",
+    "@nrwl/jest": "13.10.3",
+    "@nrwl/js": "^13.10.3",
+    "@nrwl/linter": "13.10.3",
     "@nrwl/workspace": "13.10.3",
+    "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
+    "@typescript-eslint/eslint-plugin": "~5.18.0",
+    "@typescript-eslint/parser": "~5.18.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint": "~8.12.0",
+    "eslint-config-prettier": "8.1.0",
     "husky": "^7.0.4",
+    "jest": "27.2.3",
     "nx": "13.10.3",
     "prettier": "^2.5.1",
+    "ts-jest": "27.0.5",
     "typescript": "~4.6.2"
   },
   "config": {
