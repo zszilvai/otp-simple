@@ -6,6 +6,7 @@ import * as cryptoRandomString from 'crypto-random-string';
 import { PRODUCTION_URL } from './constants';
 import { SimpleHttpClientFetchAdapter } from './simple-http-client-adapters/simple-http-client-fetch-adapter';
 import * as fetch from 'node-fetch';
+import {SimplePaymentError} from "./simple-payment-error";
 
 export interface SimpleConnectionClientOptions {
   /**
@@ -80,7 +81,7 @@ export class SimpleConnectionClient {
         merchant: this.options.merchant,
       }),
       (key, value) => {
-        if (key.includes('Date')) {
+        if (key.includes('Date') || key.includes('timeout')) {
           return format(parseISO(value), "yyyy-MM-dd'T'HH:mm:ssxxxxx");
         }
         return value;
@@ -101,8 +102,12 @@ export class SimpleConnectionClient {
     if (!isValid) {
       throw new Error('Invalid signature');
     }
-    // TODO Error handling
-    return JSON.parse(response.body);
+
+    const result = JSON.parse(response.body);
+    if(result.errorCodes && result.errorCodes.length > 0) {
+      throw new SimplePaymentError(result.errorCodes, result);
+    }
+    return result;
   }
 
   /**

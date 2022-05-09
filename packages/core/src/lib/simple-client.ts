@@ -17,10 +17,28 @@ export interface SimpleClientOptionsWithConnectionClient {
 }
 
 export interface SimpleClientOptionsWithParameters {
-  baseUrl: string;
+  /**
+   * The url of the server.
+   * Defaults to `PRODUCTION_URL`
+   */
+  baseUrl?: string;  /**
+   * The merchant id.
+   */
   merchant: string;
+  /**
+   * The secret key.
+   */
   secret: string;
-  saltProvider: () => Promise<string>;
+  /**
+   * Salt provider function. Must return a 32 character string.
+   * Defaults to `cryptoRandomString` with `{length: 32, type: 'alphanumeric'}`
+   */
+  saltProvider?: () => Promise<string>;
+  /**
+   * The http client used for the requests.
+   * Defaults to `SimpleHttpClientFetchAdapter`
+   * @default SimpleHttpClientFetchAdapter
+   */
   httpClient?: SimpleHttpClient;
 }
 
@@ -54,12 +72,13 @@ export class SimpleClient {
         merchant: options.merchant,
         saltProvider: options.saltProvider,
         secret: options.secret,
-        httpClient: options.httpClient, // TODO default to SimpleHttpClient
+        httpClient: options.httpClient,
       });
     }
   }
 
   start(params: StartOptions): Promise<PaymentResponse> {
+    // TODO add version
     return this.connectionClient.request('start', params);
   }
 
