@@ -6,7 +6,7 @@ import * as cryptoRandomString from 'crypto-random-string';
 import { PRODUCTION_URL } from './constants';
 import { SimpleHttpClientFetchAdapter } from './simple-http-client-adapters/simple-http-client-fetch-adapter';
 import * as fetch from 'node-fetch';
-import {SimplePaymentError} from "./simple-payment-error";
+import { SimplePaymentError } from './simple-payment-error';
 
 export interface SimpleConnectionClientOptions {
   /**
@@ -104,7 +104,7 @@ export class SimpleConnectionClient {
     }
 
     const result = JSON.parse(response.body);
-    if(result.errorCodes && result.errorCodes.length > 0) {
+    if (result.errorCodes && result.errorCodes.length > 0) {
       throw new SimplePaymentError(result.errorCodes, result);
     }
     return result;

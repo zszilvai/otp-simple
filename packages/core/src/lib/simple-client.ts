@@ -21,9 +21,10 @@ export interface SimpleClientOptionsWithParameters {
    * The url of the server.
    * Defaults to `PRODUCTION_URL`
    */
-  baseUrl?: string;  /**
+  baseUrl?: string
+  /**
    * The merchant id.
-   */
+   */;
   merchant: string;
   /**
    * The secret key.

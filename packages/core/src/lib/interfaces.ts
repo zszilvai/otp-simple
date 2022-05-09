@@ -261,4 +261,5 @@ export interface QueryResponse {
   totalCount: number;
 }
 
+// FIXME
 export type DetailedTransactionStatus = TransactionStatus;

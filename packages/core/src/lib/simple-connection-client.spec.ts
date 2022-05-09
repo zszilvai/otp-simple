@@ -3,8 +3,8 @@ import { PRODUCTION_URL, TEST_MERCHANT_CONFIG, TEST_URL } from './constants';
 import { SimpleHttpClientFetchAdapter } from './simple-http-client-adapters/simple-http-client-fetch-adapter';
 import * as fetch from 'node-fetch';
 import { SimpleCallResult } from './simple-http-client';
-import {SimplePaymentError} from "./simple-payment-error";
-import {getSignature} from "./integrity";
+import { SimplePaymentError } from './simple-payment-error';
+import { getSignature } from './integrity';
 
 describe('SimpleConnectionClient', () => {
   it('Should default input parameters to Fetch client, crypto-random-string and production url', async () => {
@@ -117,31 +117,34 @@ describe('SimpleConnectionClient', () => {
       httpClient: {
         post(): Promise<SimpleCallResult> {
           const payload = {
-            errorCodes: [5000]
-          }
+            errorCodes: [5000],
+          };
           const body = JSON.stringify(payload);
-          const signature = getSignature(body, TEST_MERCHANT_CONFIG.hufSecretKey);
+          const signature = getSignature(
+            body,
+            TEST_MERCHANT_CONFIG.hufSecretKey
+          );
           return Promise.resolve({ body, signature });
         },
       },
     });
     const payload = {};
-    await expect(client.request('test', payload))
-      .rejects
-      .toThrow(SimplePaymentError);
-  })
+    await expect(client.request('test', payload)).rejects.toThrow(
+      SimplePaymentError
+    );
+  });
 
   it('Should validate the signature for a request', async () => {
     const client = new SimpleConnectionClient({
       merchant: TEST_MERCHANT_CONFIG.hufMerchantId,
-      secret: TEST_MERCHANT_CONFIG.hufSecretKey
+      secret: TEST_MERCHANT_CONFIG.hufSecretKey,
     });
     const payload = {
-      field: 'value'
-    }
+      field: 'value',
+    };
     const message = JSON.stringify(payload);
     const signature = getSignature(message, TEST_MERCHANT_CONFIG.hufSecretKey);
     const result = await client.validateMessage(message, signature);
     expect(result).toBeTruthy();
-  })
+  });
 });
