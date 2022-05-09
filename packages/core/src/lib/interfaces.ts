@@ -1,42 +1,41 @@
-
 export enum Currency {
   HUF = 'HUF',
   EUR = 'EUR',
-  USD = 'USD'
+  USD = 'USD',
 }
 
 export enum Language {
   BG = 'BG',
- CS='CS',
- DE='DE',
- EN='EN',
- ES='ES',
- FR='FR',
- IT='IT',
- HR='HR',
- HU='HU',
- PL='PL',
- RO='RO',
- RU='RU',
- SK='SK',
- TR='TR'
+  CS = 'CS',
+  DE = 'DE',
+  EN = 'EN',
+  ES = 'ES',
+  FR = 'FR',
+  IT = 'IT',
+  HR = 'HR',
+  HU = 'HU',
+  PL = 'PL',
+  RO = 'RO',
+  RU = 'RU',
+  SK = 'SK',
+  TR = 'TR',
 }
 
 export enum PaymentMethod {
-  WIRE='WIRE',
-  CARD='CARD'
+  WIRE = 'WIRE',
+  CARD = 'CARD',
 }
 
 export enum ThreeDsReqAuthMethod {
-  GUEST='01',
-  REGISTERED_AT_MERCHANT='02',
-  REGISTERED_BY_THIRD_PARTY='05'
+  GUEST = '01',
+  REGISTERED_AT_MERCHANT = '02',
+  REGISTERED_BY_THIRD_PARTY = '05',
 }
 
 export interface SimpleOptions {
   baseUrl: string;
   merchant: string;
-  saltProvider: ()=>string;
+  saltProvider: () => string;
 }
 
 export declare type Country = string; //FIXME get country code list
@@ -63,7 +62,7 @@ export interface Invoice {
   address: string;
   address2: string;
   phone: string;
-  threeDSReqAuthMethod?: ThreeDsReqAuthMethod
+  threeDSReqAuthMethod?: ThreeDsReqAuthMethod;
 }
 
 export interface Delivery {
@@ -73,7 +72,7 @@ export interface Delivery {
   city: string;
   zip: string;
   address: string;
-  threeDSReqAuthMethod?: ThreeDsReqAuthMethod
+  threeDSReqAuthMethod?: ThreeDsReqAuthMethod;
 }
 
 export interface Item {
@@ -89,7 +88,7 @@ export interface StartOptionsBase {
   orderRef: string;
   currency: Currency;
   customerEmail: string;
-  language: Language,
+  language: Language;
   sdkVersion: string;
   methods: PaymentMethod[];
   timeout: Date;
@@ -105,7 +104,7 @@ export interface StartOptionsBase {
     fail: string;
     cancel: string;
     timeout: string;
-  },
+  };
   twoStep?: boolean;
   delivery?: Delivery;
 }
@@ -116,10 +115,11 @@ export interface TotalSpecified {
 
 export interface ItemsSpecified {
   total?: number;
-  items: Item[]
+  items: Item[];
 }
 
-export declare type StartOptions = StartOptionsBase & (ItemsSpecified | TotalSpecified);
+export declare type StartOptions = StartOptionsBase &
+  (ItemsSpecified | TotalSpecified);
 
 /**
  * As stated in the specification 2.
@@ -135,28 +135,27 @@ export enum PaymentStatus {
   FRAUD = 'FRAUD',
   REVERSED = 'REVERSED',
   REFUND = 'REFUND',
-  FINISHED = 'FINISHED'
+  FINISHED = 'FINISHED',
 }
 
 export enum RedirectResult {
-  SUCCESS='SUCCESS',
-  FAIL='FAIL',
-  CANCEL='CANCEL',
-  TIMEOUT='TIMEOUT'
+  SUCCESS = 'SUCCESS',
+  FAIL = 'FAIL',
+  CANCEL = 'CANCEL',
+  TIMEOUT = 'TIMEOUT',
 }
 
 export interface StartSuccessResponse {
-  orderRef:string;
-  currency:Currency;
-  transactionId:number;
-  timeout:Date;
-  total:number;
-  paymentUrl:string;
+  orderRef: string;
+  currency: Currency;
+  transactionId: number;
+  timeout: Date;
+  total: number;
+  paymentUrl: string;
 }
 
-export enum ErrorCode {
-  // TODO
-}
+export enum ErrorCode {}
+// TODO
 
 export interface StartErrorResponse {
   errorCodes: ErrorCode[];
@@ -165,31 +164,31 @@ export interface StartErrorResponse {
 export declare type PaymentResponse = StartSuccessResponse | StartErrorResponse;
 
 export interface IpnMessage {
- salt:string;
- orderRef:string;
- method:PaymentMethod;
- merchant:string;
- finishDate:Date;
- paymentDate:Date;
- transactionId:number;
- status:PaymentStatus;
+  salt: string;
+  orderRef: string;
+  method: PaymentMethod;
+  merchant: string;
+  finishDate: Date;
+  paymentDate: Date;
+  transactionId: number;
+  status: PaymentStatus;
 }
 
 export interface IpnResponse {
-  orderRef:string;
-  method:PaymentMethod;
- finishDate:Date;
- paymentDate:Date;
- transactionId:number;
- status:PaymentStatus;
- receiveDate:Date;
+  orderRef: string;
+  method: PaymentMethod;
+  finishDate: Date;
+  paymentDate: Date;
+  transactionId: number;
+  status: PaymentStatus;
+  receiveDate: Date;
 }
 
 export interface FinishOptionsBase {
- originalTotal:number;
- approveTotal:number;
- currency:Currency;
- sdkVersion:string;
+  originalTotal: number;
+  approveTotal: number;
+  currency: Currency;
+  sdkVersion: string;
 }
 
 export interface OptionTransactionIdSpecified {
@@ -201,26 +200,28 @@ export interface OptionOrderRefSpecified {
   orderRef: string;
 }
 
-export declare type FinishOptions = FinishOptionsBase & (OptionTransactionIdSpecified | OptionOrderRefSpecified);
+export declare type FinishOptions = FinishOptionsBase &
+  (OptionTransactionIdSpecified | OptionOrderRefSpecified);
 
 export interface RefundOptionsBase {
- currency:Currency;
- refundTotal:number;
- sdkVersion:string;
+  currency: Currency;
+  refundTotal: number;
+  sdkVersion: string;
 }
 
-export declare type RefundOptions = RefundOptionsBase & (OptionTransactionIdSpecified | OptionOrderRefSpecified);
+export declare type RefundOptions = RefundOptionsBase &
+  (OptionTransactionIdSpecified | OptionOrderRefSpecified);
 
 export interface RefundResponse {
- salt:string;
- merchant:string;
- orderRef:string;
- currency:Currency;
- transactionId:number;
- refundTransactionId:number;
- refundTotal:number;
- remainingTotal:number;
- detailed?: boolean;
+  salt: string;
+  merchant: string;
+  orderRef: string;
+  currency: Currency;
+  transactionId: number;
+  refundTransactionId: number;
+  refundTotal: number;
+  remainingTotal: number;
+  detailed?: boolean;
 }
 
 export interface QueryBaseOptions {
@@ -229,37 +230,37 @@ export interface QueryBaseOptions {
 }
 
 export interface QueryWithOrderRefs {
-  orderRefs: string[],
+  orderRefs: string[];
   transactionIds?: string[];
 }
 
 export interface QueryWithTransactionIds {
-  orderRefs?: string[],
+  orderRefs?: string[];
   transactionIds: string[];
 }
 
-export type QueryOptions = QueryBaseOptions & (QueryWithOrderRefs | QueryWithTransactionIds);
-
+export type QueryOptions = QueryBaseOptions &
+  (QueryWithOrderRefs | QueryWithTransactionIds);
 
 export interface TransactionStatus {
- orderRef:string;
- total:number;
- transactionId:number;
- status:PaymentStatus;
- resultCode?:string;
- remainingTotal:number;
- paymentDate:Date;
- finishDate:Date;
- method:PaymentMethod;
+  orderRef: string;
+  total: number;
+  transactionId: number;
+  status: PaymentStatus;
+  resultCode?: string;
+  remainingTotal: number;
+  paymentDate: Date;
+  finishDate: Date;
+  method: PaymentMethod;
 }
 
 export interface QueryResponse {
   salt: string;
-  merchant:string;
+  merchant: string;
   transactions: TransactionStatus[];
   totalCount: number;
 }
 
-export interface DetailedTransactionStatus extends TransactionStatus{
+export interface DetailedTransactionStatus extends TransactionStatus {
   // TODO Refunds
 }

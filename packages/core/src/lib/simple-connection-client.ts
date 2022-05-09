@@ -1,12 +1,11 @@
-import {getSignature, validateSignature} from "./integrity";
-import { URL } from "url";
-import {SimpleHttpClient} from "./simple-http-client";
-import {format, parseISO} from "date-fns";
+import { getSignature, validateSignature } from './integrity';
+import { URL } from 'url';
+import { SimpleHttpClient } from './simple-http-client';
+import { format, parseISO } from 'date-fns';
 import * as cryptoRandomString from 'crypto-random-string';
-import {PRODUCTION_URL} from "./constants";
-import {SimpleHttpClientFetchAdapter} from "./simple-http-client-adapters/simple-http-client-fetch-adapter";
+import { PRODUCTION_URL } from './constants';
+import { SimpleHttpClientFetchAdapter } from './simple-http-client-adapters/simple-http-client-fetch-adapter';
 import * as fetch from 'node-fetch';
-
 
 export interface SimpleConnectionClientOptions {
   /**
@@ -36,26 +35,28 @@ export interface SimpleConnectionClientOptions {
 }
 
 export class SimpleConnectionClient {
-
   options: Required<SimpleConnectionClientOptions>;
 
   constructor(options: SimpleConnectionClientOptions) {
-      if(!options.httpClient) {
-          options.httpClient = new SimpleHttpClientFetchAdapter(fetch as any)
-      }
-      if(!options.baseUrl) {
-          options.baseUrl = PRODUCTION_URL;
-      }
-      if(!options.merchant) {
-          throw new Error("Missing merchant");
-      }
-      if(!options.secret) {
-          throw new Error("Missing secret");
-      }
-      if(!options.saltProvider) {
-          options.saltProvider = () => Promise.resolve(cryptoRandomString({length: 32, type: 'alphanumeric'}));
-      }
-      this.options = options as Required<SimpleConnectionClientOptions>;
+    if (!options.httpClient) {
+      options.httpClient = new SimpleHttpClientFetchAdapter(fetch as any);
+    }
+    if (!options.baseUrl) {
+      options.baseUrl = PRODUCTION_URL;
+    }
+    if (!options.merchant) {
+      throw new Error('Missing merchant');
+    }
+    if (!options.secret) {
+      throw new Error('Missing secret');
+    }
+    if (!options.saltProvider) {
+      options.saltProvider = () =>
+        Promise.resolve(
+          cryptoRandomString({ length: 32, type: 'alphanumeric' })
+        );
+    }
+    this.options = options as Required<SimpleConnectionClientOptions>;
   }
 
   /**
@@ -73,21 +74,32 @@ export class SimpleConnectionClient {
    */
   public async request(endpoint: string, body: any) {
     const salt = await this.options.saltProvider();
-    const payload = JSON.stringify(Object.assign(body, {
-      salt,
-      merchant: this.options.merchant
-    }), (key, value) => {
-      if (key.includes('Date')) {
-        return format(parseISO(value),'yyyy-MM-dd\'T\'HH:mm:ssxxxxx');
+    const payload = JSON.stringify(
+      Object.assign(body, {
+        salt,
+        merchant: this.options.merchant,
+      }),
+      (key, value) => {
+        if (key.includes('Date')) {
+          return format(parseISO(value), "yyyy-MM-dd'T'HH:mm:ssxxxxx");
+        }
+        return value;
       }
-      return value;
-    });
+    );
     const hash = getSignature(payload, this.options.secret);
-    const requestUrl = new URL(endpoint, this.options.baseUrl).toString()
-    const response = await this.options.httpClient.post(requestUrl, payload, hash);
-    const isValid = validateSignature(response.body, this.options.secret, response.signature);
+    const requestUrl = new URL(endpoint, this.options.baseUrl).toString();
+    const response = await this.options.httpClient.post(
+      requestUrl,
+      payload,
+      hash
+    );
+    const isValid = validateSignature(
+      response.body,
+      this.options.secret,
+      response.signature
+    );
     if (!isValid) {
-      throw new Error("Invalid signature");
+      throw new Error('Invalid signature');
     }
     // TODO Error handling
     return JSON.parse(response.body);
