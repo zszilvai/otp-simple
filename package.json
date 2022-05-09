@@ -5,6 +5,7 @@
   "author": "zozzzzz",
   "scripts": {
     "commitizen": "cz",
+    "husky": "husky",
     "prepare": "husky install"
   },
   "private": false,
