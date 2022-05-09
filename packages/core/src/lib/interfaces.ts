@@ -86,8 +86,6 @@ export interface Item {
 }
 
 export interface StartOptionsBase {
-  salt: string;
-  merchant: string;
   orderRef: string;
   currency: Currency;
   customerEmail: string;
@@ -148,8 +146,6 @@ export enum RedirectResult {
 }
 
 export interface StartSuccessResponse {
-  salt:string;
-  merchant:string;
   orderRef:string;
   currency:Currency;
   transactionId:number;
@@ -166,7 +162,7 @@ export interface StartErrorResponse {
   errorCodes: ErrorCode[];
 }
 
-export declare type StartResponse = StartSuccessResponse | StartErrorResponse;
+export declare type PaymentResponse = StartSuccessResponse | StartErrorResponse;
 
 export interface IpnMessage {
  salt:string;
@@ -180,10 +176,8 @@ export interface IpnMessage {
 }
 
 export interface IpnResponse {
- salt:string;
- orderRef:string;
- method:PaymentMethod;
- merchant:string;
+  orderRef:string;
+  method:PaymentMethod;
  finishDate:Date;
  paymentDate:Date;
  transactionId:number;
@@ -192,8 +186,6 @@ export interface IpnResponse {
 }
 
 export interface FinishOptionsBase {
- salt:string;
- merchant:string;
  originalTotal:number;
  approveTotal:number;
  currency:Currency;
@@ -212,8 +204,6 @@ export interface OptionOrderRefSpecified {
 export declare type FinishOptions = FinishOptionsBase & (OptionTransactionIdSpecified | OptionOrderRefSpecified);
 
 export interface RefundOptionsBase {
- salt:string;
- merchant:string;
  currency:Currency;
  refundTotal:number;
  sdkVersion:string;
@@ -234,9 +224,8 @@ export interface RefundResponse {
 }
 
 export interface QueryBaseOptions {
-  merchant: string;
   salt: string;
-  sdkVersion: string;
+  merchant: string;
 }
 
 export interface QueryWithOrderRefs {
@@ -249,9 +238,10 @@ export interface QueryWithTransactionIds {
   transactionIds: string[];
 }
 
+export type QueryOptions = QueryBaseOptions & (QueryWithOrderRefs | QueryWithTransactionIds);
+
+
 export interface TransactionStatus {
-  salt: string;
- merchant:string;
  orderRef:string;
  total:number;
  transactionId:number;
@@ -263,7 +253,7 @@ export interface TransactionStatus {
  method:PaymentMethod;
 }
 
-export interface QueryResult {
+export interface QueryResponse {
   salt: string;
   merchant:string;
   transactions: TransactionStatus[];
