@@ -17,7 +17,7 @@ export class SimpleHttpClientFetchAdapter implements SimpleHttpClient {
     const bodyText = await response.text();
     const responseSignature = response.headers.get('Signature');
     if(!responseSignature) {
-      throw new Error('No signature in response');
+      throw new Error('No signature found in response');
     }
     return {
       body: bodyText,
