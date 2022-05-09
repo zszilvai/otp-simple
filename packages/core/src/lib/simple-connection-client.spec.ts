@@ -93,11 +93,7 @@ describe('SimpleConnectionClient', () => {
       secret: TEST_MERCHANT_CONFIG.hufSecretKey,
       baseUrl: TEST_URL,
       httpClient: {
-        post(
-          url: string,
-          body: string,
-          signature: string
-        ): Promise<SimpleCallResult> {
+        post(url: string, body: string): Promise<SimpleCallResult> {
           return Promise.resolve({ body, signature: 'invalid' });
         },
       },
@@ -106,7 +102,7 @@ describe('SimpleConnectionClient', () => {
       testDate: new Date(),
       other: 'other',
     };
-    expect(client.request('test', payload)).rejects.toThrowError(
+    await expect(client.request('test', payload)).rejects.toThrowError(
       /Invalid signature/
     );
   });

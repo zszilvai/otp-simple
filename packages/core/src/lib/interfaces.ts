@@ -261,6 +261,4 @@ export interface QueryResponse {
   totalCount: number;
 }
 
-export interface DetailedTransactionStatus extends TransactionStatus {
-  // TODO Refunds
-}
+export type DetailedTransactionStatus = TransactionStatus;

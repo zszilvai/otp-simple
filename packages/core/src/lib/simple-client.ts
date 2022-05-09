@@ -1,20 +1,16 @@
 import { SimpleHttpClient } from './simple-http-client';
-import { SimpleConnectionClient } from '@otp-simple/core';
+import { SimpleConnectionClient } from './simple-connection-client';
 import {
   FinishOptions,
   IpnMessage,
   IpnResponse,
   StartOptions,
   PaymentResponse,
-  StartSuccessResponse,
   RefundOptions,
   RefundResponse,
   QueryOptions,
   QueryResponse,
 } from './interfaces';
-import { validateSignature } from './integrity';
-import { format } from 'date-fns';
-import addDate from 'date-fns/add';
 
 export interface SimpleClientOptionsWithConnectionClient {
   connectionClient: SimpleConnectionClient;
